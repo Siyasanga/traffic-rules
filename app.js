@@ -3,8 +3,40 @@
 var body = document.querySelector("body");
 
 var taxiLocationCounter = 1;
+var previousLocationCounter;
+var robots = [];
+robots.push(new TrafficLight(taxiLocationCounter));
 
 body.onkeydown = function(e){
+    if(e.keyCode == 39 ){
+      if(robots[taxiLocationCounter-1].state() != 'green'){
+        return;
+      }
+      previousLocationCounter = taxiLocationCounter;
+      taxiLocationCounter++;
+      if(taxiLocationCounter == 10){
+        taxiLocationCounter = 1;
+      }
+      robots[taxiLocationCounter-1] = new TrafficLight(taxiLocationCounter);
+      moveTaxi(previousLocationCounter,taxiLocationCounter);
+    }
+    else if(e.keyCode == 37){
+      if(robots[taxiLocationCounter-1].state() != 'green'){
+        return;
+      }
+      previousLocationCounter = taxiLocationCounter;
+      taxiLocationCounter--;
+      if(taxiLocationCounter < 1){
+        taxiLocationCounter = 9;
+      }
+      moveTaxi(previousLocationCounter,taxiLocationCounter);
+    }
+    if(e.keyCode == 40){
+      robots[taxiLocationCounter-1].green();
+    }
+    else if(e.keyCode == 38){
+      robots[taxiLocationCounter-1].red()
+    }
 
     //right arrow : 39
     //left arrow  : 37
@@ -28,7 +60,6 @@ body.onkeydown = function(e){
     */
 
     // to make the second TrafficLight `Orange`
-    var tl = new TrafficLight(2);
-    tl.orange();
+
 
 };
